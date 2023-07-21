@@ -9,6 +9,9 @@
 # операцией, даже ошибочной
 # ✔ Любое действие выводит сумму денег
 
+from datetime import datetime
+
+
 global balans
 balans = 0
 WEALTH = 5000000
@@ -21,6 +24,8 @@ MULTI_OPERATIONS = 3
 TAX = 10
 global counter
 counter = 0
+global log
+log = {}
 
 
 def checking_multiplicity(cash):
@@ -53,6 +58,7 @@ def withdraw():
     else:
         print("Введите сумму кратную 50")
     print(f'На балансе осталось {balans}')
+    log_('снятие', cash)
 
 
 def deposit():
@@ -60,13 +66,20 @@ def deposit():
     global counter
     if balans > WEALTH:
         balans -= balans / 100 * TAX
-    cach = int(input("Укажите сумму: "))
-    if checking_multiplicity(cach):
-        balans += cach
+    cash = int(input("Укажите сумму: "))
+    if checking_multiplicity(cash):
+        balans += cash
         counter += 1
     else:
         print("Введите сумму кратную 50")
     print(f'На балансе осталось {balans}')
+    log_('пополнение', cash)
+
+
+def log_(operation: str, cash: int):
+    time_ = str(datetime.now().replace(microsecond=0))
+    global log
+    log[operation] = [cash, time_]
 
 
 while True:
